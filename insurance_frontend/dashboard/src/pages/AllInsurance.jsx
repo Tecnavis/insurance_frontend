@@ -1,8 +1,9 @@
 import React from 'react'
 import Footer from '../components/footer/Footer'
-import AllSalesHeader from '../components/header/AllSalesHeader'
+import AllInsuranceHeader from '../components/header/AllInsuranceHeader'
 import AllProductTable from '../components/tables/AllProductTable'
 import AllSalesTable from '../components/tables/AllSalesTable'
+import AllInsuranceTable from '../components/tables/AllInsuranceTable'
 import HeaderBtn from '../components/header/HeaderBtn'
 
 const AllInsuranceMainContent = () => {
@@ -11,10 +12,10 @@ const AllInsuranceMainContent = () => {
         <div className="row g-4">
             <div className="col-12">
                 <div className="panel">
-                    <AllSalesHeader/>
+                    <AllInsuranceHeader/>
                     <div className="panel-body">
                         <HeaderBtn/>
-                        <AllSalesTable/>
+                        <AllInsuranceTable/>
                     </div>
                 </div>
             </div>

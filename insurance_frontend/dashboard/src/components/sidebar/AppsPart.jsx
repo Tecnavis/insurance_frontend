@@ -98,7 +98,7 @@ const AppsPart = () => {
             id="insuranceDropdown"
           >
             <li className="sidebar-dropdown-item">
-              <NavLink to="/insuranceReport" className="sidebar-link">
+              <NavLink to="/allinsurance" className="sidebar-link">
                 Insurance Report
               </NavLink>
             </li>
