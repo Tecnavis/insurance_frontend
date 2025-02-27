@@ -38,5 +38,4 @@ const AllInsuranceHeader = () => {
 
   )
 }
-
 export default AllInsuranceHeader

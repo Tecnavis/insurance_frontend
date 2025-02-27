@@ -102,9 +102,18 @@ const AppsPart = () => {
                 Insurance Report
               </NavLink>
             </li>
+            <li className="sidebar-dropdown-item">
+              <NavLink to="/insurancecategory" className="sidebar-link" onClick={handleSubNavLinkClick}>
+                 Category
+              </NavLink>
+            </li>
+            <li className="sidebar-dropdown-item">
+              <NavLink to="/insurancesubcategory" className="sidebar-link" onClick={handleSubNavLinkClick}>
+               SubCategory
+              </NavLink>
+            </li>
           </ul>
         </li>
-
 
         <li className="sidebar-dropdown-item">
           <Link
