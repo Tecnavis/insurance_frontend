@@ -54,7 +54,7 @@ const AddNewCategory = () => {
                 formData.append('thumbnail', thumbnail);
             }
             const response = await axios.post(
-                `${BASE_URL}/services/categories/create/`, 
+                `${BASE_URL}/insurance/categories/insurance/create/`, 
                 formData,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );
@@ -100,29 +100,7 @@ const AddNewCategory = () => {
                                     required
                                 ></textarea>
                             </div>
-                            {/* <div className="col-12">
-                                <div className="upload-category-thumbnail">
-                                    <label className="form-label mb-0" role='button' onClick={() => setShowThumbnail(!showThumbnail)}>
-                                        Add Category Thumbnail
-                                    </label>
-                                    <div {...getRootProps()} className={`${showThumbnail ? '' : 'd-none'}`}>
-                                        <input {...getInputProps()} />
-                                        <div className="jquery-uploader">
-                                            <div className="jquery-uploader-preview-container">
-                                                <div className="jquery-uploader-select-card">
-                                                    <div className="jquery-uploader-select">
-                                                        <div className="upload-button">
-                                                            <i className="fa fa-plus"></i><br />
-                                                            <a>Upload</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {thumbnail && <p>{thumbnail.name}</p>}
-                                    </div>
-                                </div>
-                            </div> */}
+                           
                             <div className="col-12 d-flex justify-content-end">
                                 <button className="btn btn-sm btn-primary" type="submit" disabled={loading}>
                                     {loading ? 'Saving...' : 'Save Category'}

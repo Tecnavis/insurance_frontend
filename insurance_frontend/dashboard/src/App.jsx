@@ -47,7 +47,9 @@ function App() {
           <Route element={<PublicLayout />}>
               <Route path="/registration" element={<Registration />} />
               <Route path="/" element={<Login2 setIsAuthenticated={setIsAuthenticated} />} />
-          </Route>        
+          </Route>   
+          <Route path="/insurancecategory" element={<InsuranceCategory/>}/>
+          <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/>
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<CrmDashboard />} />

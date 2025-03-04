@@ -4,6 +4,7 @@ import AddNewCategory from '../components/category/AddNewCategory'
 import AllCategory from '../components/category/AllCategory'
 
 const CategoryMainContent = () => {
+  
   return (
     <div className="main-content">
         <div className="dashboard-breadcrumb dashboard-panel-header mb-30">
