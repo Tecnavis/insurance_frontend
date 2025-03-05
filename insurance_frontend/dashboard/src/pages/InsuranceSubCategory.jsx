@@ -11,9 +11,9 @@ const InsuranceSubCategoryMainContent = () => {
     const [categoryData, setCategoryData] = useState({
         name: '',
         description: '',
-        is_active: true
+        is_active: true,
+        category_id: ''
     });
-
     const [thumbnail, setThumbnail] = useState(null);
     const [showThumbnail, setShowThumbnail] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -81,6 +81,7 @@ const InsuranceSubCategoryMainContent = () => {
             formData.append('name', categoryData.name);
             formData.append('description', categoryData.description);
             formData.append('is_active', categoryData.is_active);
+            formData.append('category_id', categoryData.category_id);
             if (thumbnail) {
                 formData.append('thumbnail', thumbnail);
             }

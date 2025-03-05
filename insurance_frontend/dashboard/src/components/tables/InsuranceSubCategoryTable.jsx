@@ -4,6 +4,7 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import PaginationSection from './PaginationSection';
 import axios from 'axios';
 import { BASE_URL } from "../../api";
+import Cookies from 'js-cookie';
 
 const InsuranceSubCategoryTable = () => {
     const [categories, setCategories] = useState([]);
@@ -11,17 +12,13 @@ const InsuranceSubCategoryTable = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [dataPerPage] = useState(10);
-
-    // States for modals
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [editedCategory, setEditedCategory] = useState({ name: '', description: '' });
-
     useEffect(() => {
         fetchCategories();
     }, []);
-
     const fetchCategories = async () => {
         try {
             const token = Cookies.get("access_token");
@@ -35,64 +32,70 @@ const InsuranceSubCategoryTable = () => {
             setLoading(false);
         }
     };
-
-    // Open edit modal
+    
     const handleEdit = (category) => {
         setSelectedCategory(category);
-        setEditedCategory({ name: category.name, description: category.description });
+        setEditedCategory({ name: category.name, description: category.category?.description || "", });
         setShowEditModal(true);
     };
-
-    // Open delete modal
     const handleDelete = (category) => {
         setSelectedCategory(category);
         setShowDeleteModal(true);
     };
 
-       // Handle category update
-       const updateCategory = async () => {
+    const updateCategory = async () => {
         try {
             const token = Cookies.get("access_token");
-            await axios.put(
-                `${BASE_URL}/insurance/categories/${selectedCategory.id}/`,
+    
+            console.log("API Request:");  
+            console.log("URL:", `${BASE_URL}/insurance/subcategories/${selectedCategory.id}/`);
+            console.log("Payload:", editedCategory);
+            console.log("Token:", token);
+    
+            const response = await axios.put(
+                `${BASE_URL}/insurance/subcategories/${selectedCategory.id}/`,
                 editedCategory,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            fetchCategories(); // Refresh data
+    
+            console.log("API Response:", response.data);
+    
+            fetchCategories(); 
             setShowEditModal(false);
         } catch (error) {
             console.error("Error updating category:", error);
+            if (error.response) {
+                console.log("Error Response Data:", error.response.data);
+                console.log("Error Status:", error.response.status);
+                console.log("Error Headers:", error.response.headers);
+            }
         }
     };
+    
 
-    // Handle category deletion
     const deleteCategory = async () => {
         try {
             const token = Cookies.get("access_token");
             await axios.delete(
-                `${BASE_URL}/insurance/categories/${selectedCategory.id}/delete/`,
+                `${BASE_URL}/insurance/subcategories/${selectedCategory.id}/delete/`,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            fetchCategories(); // Refresh data
+            fetchCategories(); 
             setShowDeleteModal(false);
         } catch (error) {
             console.error("Error deleting category:", error);
         }
     };
-
-    // Pagination logic
     const indexOfLastData = currentPage * dataPerPage;
     const indexOfFirstData = indexOfLastData - dataPerPage;
     const currentData = categories.slice(indexOfFirstData, indexOfLastData);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
     const totalPages = Math.ceil(categories.length / dataPerPage);
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-
     return (
         <>
             <OverlayScrollbarsComponent>
@@ -119,10 +122,11 @@ const InsuranceSubCategoryTable = () => {
                                         <input className="form-check-input" type="checkbox" />
                                     </td>
                                     <td>{category.name}</td>
-                                    <td>{category.description}</td>
+                                    {/* <td>{category.description}</td> */}
+                                    <td>{category.category?.description || "No Description"}</td>
+
                                     <td>
                                     <div className="btn-box">
-                                        
                                     <button onC onClick={() => handleEdit(category)}><i className="fa-light fa-pen-to-square"></i></button>
                                     <button onClick={() => handleDelete(category)}><i className="fa-light fa-trash"></i></button>
                                     </div>
@@ -151,13 +155,16 @@ const InsuranceSubCategoryTable = () => {
                             />
                         </Form.Group>
                         <Form.Group>
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                value={editedCategory.description}
-                                onChange={(e) => setEditedCategory({ ...editedCategory, description: e.target.value })}
-                            />
-                        </Form.Group>
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={editedCategory.description}
+                            onChange={(e) => setEditedCategory({ 
+                                ...editedCategory, 
+                                description: e.target.value 
+                            })}
+                        />
+                    </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -182,5 +189,4 @@ const InsuranceSubCategoryTable = () => {
         </>
     );
 };
-
 export default InsuranceSubCategoryTable;

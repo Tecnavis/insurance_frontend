@@ -56,8 +56,8 @@ function App() {
             <Route path="/allProduct" element={<AllProduct />} />
 
             <Route path="/category" element={<Category />} />
-            <Route path="/insurancecategory" element={<InsuranceCategory/>}/>
-            <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/>
+            {/* <Route path="/insurancecategory" element={<InsuranceCategory/>}/> */}
+            {/* <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/> */}
 
             <Route path="/addNewProduct" element={<AddNewProduct />} />
             <Route path="/purchaseditem" element={<Customer />} />
