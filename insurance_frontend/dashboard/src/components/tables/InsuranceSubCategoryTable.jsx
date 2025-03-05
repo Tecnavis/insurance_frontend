@@ -24,10 +24,13 @@ const InsuranceSubCategoryTable = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/services/categories/`);
+            const token = Cookies.get("access_token");
+            const response = await axios.get(`${BASE_URL}/insurance/subcategories/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             setCategories(response.data);
         } catch (error) {
-            setError('Failed to fetch categories');
+            setError("Failed to fetch categories");
         } finally {
             setLoading(false);
         }
@@ -46,30 +49,38 @@ const InsuranceSubCategoryTable = () => {
         setShowDeleteModal(true);
     };
 
-    // Handle category update
-    const updateCategory = async () => {
+       // Handle category update
+       const updateCategory = async () => {
         try {
+            const token = Cookies.get("access_token");
             await axios.put(
-                `${BASE_URL}/services/categories/${selectedCategory.id}/update/`,
-                editedCategory
-              );
+                `${BASE_URL}/insurance/categories/${selectedCategory.id}/`,
+                editedCategory,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             fetchCategories(); // Refresh data
             setShowEditModal(false);
         } catch (error) {
-            console.error('Error updating category:', error);
+            console.error("Error updating category:", error);
         }
     };
 
     // Handle category deletion
     const deleteCategory = async () => {
         try {
+            const token = Cookies.get("access_token");
             await axios.delete(
-                `${BASE_URL}/services/categories/${selectedCategory.id}/delete/`
-              );
+                `${BASE_URL}/insurance/categories/${selectedCategory.id}/delete/`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             fetchCategories(); // Refresh data
             setShowDeleteModal(false);
         } catch (error) {
-            console.error('Error deleting category:', error);
+            console.error("Error deleting category:", error);
         }
     };
 
