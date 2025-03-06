@@ -19,7 +19,8 @@ import AllPurchase from "./pages/AllPurchase"
 import Category from "./pages/Category"
 import InsuranceCategory from "./pages/InsuranceCategory"
 import InsuranceSubCategory from "./pages/InsuranceSubCategory"
-
+import AllPolicyOwner from "./pages/AllPolicyOwner" 
+import AddPolicyOwner from "./pages/AddPolicyOwner"
 import Invoices from "./pages/Invoices"
 import Login2 from "./pages/Login2"
 import Registration from "./pages/Registration"
@@ -54,11 +55,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<CrmDashboard />} />
             <Route path="/allProduct" element={<AllProduct />} />
-
             <Route path="/category" element={<Category />} />
-            {/* <Route path="/insurancecategory" element={<InsuranceCategory/>}/> */}
-            {/* <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/> */}
-
             <Route path="/addNewProduct" element={<AddNewProduct />} />
             <Route path="/purchaseditem" element={<Customer />} />
             <Route path="/allSales" element={<AllSales />} />
@@ -74,8 +71,11 @@ function App() {
             <Route path="/invoice/:id" element={<Invoices />} />
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/editProfile" element={<EditProfile/>}/>
+
             <Route path="/allinsurance" element={<AllInsurance/>}/>
             <Route path="/addinsurance" element={<AddInsurance/>}/>
+            <Route path="/addpolicyowner" element={<AllPolicyOwner />} />
+            <Route path="/addPolicyOwner" element={<AddPolicyOwner />} />
           </Route>
         </Route>        
       </Routes>
