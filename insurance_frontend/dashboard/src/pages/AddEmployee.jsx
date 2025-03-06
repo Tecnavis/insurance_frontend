@@ -21,7 +21,8 @@ const AddEmployee = () => {
             {/* <SalarySection/> */}
             {/* <BankDetails/> */}
             {/* <PermanentAddress/> */}
-            <BiologicalInfo/>
+
+            {/* <BiologicalInfo/> */}
             {/* <EmergencyContact/> */}
             {/* <LoginInfo/> */}
             {/* <SaveBtn/> */}

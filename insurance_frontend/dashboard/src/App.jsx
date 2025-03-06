@@ -49,8 +49,6 @@ function App() {
               <Route path="/registration" element={<Registration />} />
               <Route path="/" element={<Login2 setIsAuthenticated={setIsAuthenticated} />} />
           </Route>   
-          <Route path="/insurancecategory" element={<InsuranceCategory/>}/>
-          <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/>
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<CrmDashboard />} />
@@ -72,9 +70,13 @@ function App() {
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/editProfile" element={<EditProfile/>}/>
 
+            <Route path="/insurancecategory" element={<InsuranceCategory/>}/>
+            <Route path="/insurancesubcategory" element={<InsuranceSubCategory/>}/>
+
             <Route path="/allinsurance" element={<AllInsurance/>}/>
             <Route path="/addinsurance" element={<AddInsurance/>}/>
-            <Route path="/addpolicyowner" element={<AllPolicyOwner />} />
+
+            <Route path="/allpolicyowner" element={<AllPolicyOwner />} />
             <Route path="/addPolicyOwner" element={<AddPolicyOwner />} />
           </Route>
         </Route>        

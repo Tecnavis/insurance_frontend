@@ -172,8 +172,9 @@ const InsuranceSubCategoryMainContent = () => {
                     </div>
                 </div>
                 <AllInsuranceSubCategory />
+                <Footer />
             </div>
-            <Footer />
+           
         </div>
     );
 };
