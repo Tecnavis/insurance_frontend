@@ -12,8 +12,8 @@ const AddPolicyOwner = () => {
         <div className="row">
             <BasicInforPolicyOwner/>
             {/* <BasicInformation/> */}
-            <BiologicalInfo/>
-            <SaveBtn/>
+            {/* <BiologicalInfo/> */}
+            {/* <SaveBtn/> */}
         </div>
         <Footer/>
     </div>
