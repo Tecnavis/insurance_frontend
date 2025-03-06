@@ -4,6 +4,7 @@ import { BASE_URL } from "../../api";
 import Cookies from 'js-cookie';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 
 const BasicInformation = () => {
@@ -34,8 +35,16 @@ const BasicInformation = () => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+
+    const formattedData = {
+      ...formData,
+      date_of_birth: formData.date_of_birth
+        ? format(formData.date_of_birth, "dd-MM-yyyy") // Convert before sending
+        : null,
+    };
+
     try {
-      const response = await axios.post(`${BASE_URL}/insurance/policy-owner/create/`, formData, {
+      const response = await axios.post(`${BASE_URL}/insurance/policy-owner/create/`, formattedData, {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${Cookies.get("access_token")}`
@@ -152,6 +161,14 @@ const BasicInformation = () => {
                             placeholderText="dd-mm-yyyy"
                             dateFormat="dd-MM-yyyy"
                         />
+                           {/* <DatePicker
+                              selected={formData.date_of_birth}
+                              onChange={handleDateChange}
+                              className="form-control"
+                              placeholderText="dd-MM-yyyy"
+                              dateFormat="dd-MM-yyyy" // Display format
+                            /> */}
+
                     </div>  
               </div>
               <div className="col-xxl-3 col-lg-4 col-sm-6">
