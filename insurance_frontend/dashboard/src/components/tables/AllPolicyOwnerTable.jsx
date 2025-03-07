@@ -7,7 +7,7 @@ import { BASE_URL } from "../../api";
 import Cookies from "js-cookie";
 
 
-const AllCustomerTable = () => {
+const AllPolicyOwnerTable = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,10 +27,10 @@ const AllCustomerTable = () => {
     const fetchCustomers = async (page) => {
       try {
         const token = Cookies.get("access_token");
-        const response = await axios.get(`${BASE_URL}/partner/partners/?page=${page}&partner_type=customer`, {
+        const response = await axios.get(`${BASE_URL}/insurance/policy-owners/?page=${page}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const customersWithDropdown = response.data.results.map((customer) => ({
+        const customersWithDropdown = response.data.map((customer) => ({
           ...customer,
           showDropdown: false,
         }));
@@ -44,31 +44,31 @@ const AllCustomerTable = () => {
       }
     };
     const handleViewEmployee = async (id) => {
-  if (!id) {
-    console.error("Invalid employee ID:", id);
-    return;
-  }
+      if (!id) {
+        console.error("Invalid employee ID:", id);
+        return;
+      }
 
-  try {
-    const response = await fetch(`${BASE_URL}/partner/partner/${id}/`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch employee details");
-    }
-    
-    const data = await response.json();
-    if (!data || !data.id) {
-      throw new Error("Invalid data received");
-    }
+      try {
+        const response = await fetch(`${BASE_URL}/insurance/policy-owners/${id}/`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch employee details");
+        }
+        
+        const data = await response.json();
+        if (!data || !data.id) {
+          throw new Error("Invalid data received");
+        }
 
-    // Ensure `isEditing` is NOT set or is set to false
-    setSelectedEmployee({ ...data, isEditing: false });
+        // Ensure `isEditing` is NOT set or is set to false
+        setSelectedEmployee({ ...data, isEditing: false });
 
-    // Ensure modal opens
-    setShowModal(true);
-  } catch (error) {
-    console.error("Error fetching employee details:", error);
-  }
-};
+        // Ensure modal opens
+        setShowModal(true);
+      } catch (error) {
+        console.error("Error fetching employee details:", error);
+      }
+    };
 
     const handleOpenEditModal = (customer) => {
       setSelectedEmployee({ ...customer, isEditing: true });
@@ -76,7 +76,7 @@ const AllCustomerTable = () => {
   };
     const handleUpdateEmployee = async () => {
         try {
-          const response = await fetch(`${BASE_URL}/partner/partners/${selectedEmployee.id}/`, {
+          const response = await fetch(`${BASE_URL}/insurance/policy-owner/${selectedEmployee.id}/`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const AllCustomerTable = () => {
     const handleDeleteEmployee = async (id) => {
       if (window.confirm("Are you sure you want to delete this employee?")) {
         try {
-          const response = await fetch(`${BASE_URL}/partner/partners/${id}/delete/`, {
+          const response = await fetch(`${BASE_URL}/insurance/policy-owner/${id}/delete/`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
@@ -142,37 +142,37 @@ const AllCustomerTable = () => {
   return (
     <>
       <OverlayScrollbarsComponent>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Action</th>
-              <th>Profile ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact Number</th>
-              <th>Secondary Contact</th>
-              <th>Company Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.length > 0 ? (
-              customers.map((customer, index) => (
-                <tr key={index}>
-                  <td>
-                    <div className="digi-dropdown dropdown d-inline-block" ref={dropdownRef}>
-                      <button
-                        className={`btn btn-sm btn-outline-primary ${customer.showDropdown ? "show" : ""}`}
-                        onClick={(event) => handleDropdownToggle(event, index)}
-                      >
-                        Action <i className="fa-regular fa-angle-down"></i>
-                      </button>
-                      <ul
-                        className={`digi-table-dropdown digi-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm ${
-                          customer.showDropdown ? "show" : ""
-                        }`}
-                      >
-                        <li>
-                        <button className="dropdown-item" onClick={() => handleViewEmployee(customer.id)}>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Profile ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact Number</th>
+            <th>Secondary Contact</th>
+            <th>Nominee Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {customers.length > 0 ? (
+            customers.map((owner, index) => (
+              <tr key={index}>
+                <td>
+                  <div className="digi-dropdown dropdown d-inline-block" ref={dropdownRef}>
+                    <button
+                      className={`btn btn-sm btn-outline-primary ${owner.showDropdown ? "show" : ""}`}
+                      onClick={(event) => handleDropdownToggle(event, index)}
+                    >
+                      Action <i className="fa-regular fa-angle-down"></i>
+                    </button>
+                    <ul
+                      className={`digi-table-dropdown digi-dropdown-menu dropdown-menu dropdown-slim dropdown-menu-sm ${
+                        owner.showDropdown ? "show" : ""
+                      }`}
+                    >
+                      <li>
+                        <button className="dropdown-item" onClick={() => handleViewEmployee(owner.id)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-eye"></i>
                           </span>
@@ -180,7 +180,7 @@ const AllCustomerTable = () => {
                         </button>
                       </li>
                       <li>
-                      <button className="dropdown-item" onClick={() => handleOpenEditModal(customer)}>
+                        <button className="dropdown-item" onClick={() => handleOpenEditModal(owner)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-pen-nib"></i>
                           </span>
@@ -188,33 +188,34 @@ const AllCustomerTable = () => {
                         </button>
                       </li>
                       <li>
-                      <button className="dropdown-item" onClick={() => handleDeleteEmployee(customer.id)}>
+                        <button className="dropdown-item" onClick={() => handleDeleteEmployee(owner.id)}>
                           <span className="dropdown-icon">
                             <i className="fa-light fa-trash-can"></i>
                           </span>
                           Delete
                         </button>
                       </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>{customer.profile_id}</td>
-                  <td>{`${customer.first_name} ${customer.last_name}`}</td>
-                  <td>{customer.email || "N/A"}</td>
-                  <td>{customer.contact_number || "N/A"}</td>
-                  <td>{customer.secondary_contact || "N/A"}</td>
-                  <td>{customer.company_name || "N/A"}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center">
-                  No customers found.
+                    </ul>
+                  </div>
                 </td>
+                <td>{owner.id}</td>
+                <td>{owner.username}</td>
+                <td>{owner.email || "N/A"}</td>
+                <td>{owner.contact_number || "N/A"}</td>
+                <td>{owner.alternative_phone || "N/A"}</td>
+                <td>{owner.nominee_name || "N/A"}</td>
               </tr>
-            )}
-          </tbody>
-        </Table>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="7" className="text-center">
+                No policy owners found.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+
           {showModal && selectedEmployee && (
             selectedEmployee.isEditing ? (
               // Edit Modal
@@ -358,4 +359,4 @@ const AllCustomerTable = () => {
     </>
   );
 };
-export default AllCustomerTable;
+export default AllPolicyOwnerTable;
