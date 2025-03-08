@@ -4,12 +4,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { BASE_URL } from '../../api';
 import Cookies from 'js-cookie';
+import { format } from "date-fns";
 
 const InsuranceForm = () => {
     const [formData, setFormData] = useState({
         policy_owner: '',
         policy_number: '',
-        insurance_type: '',
         category: '',
         sub_category: '',
         premium_amount: '',
@@ -21,11 +21,11 @@ const InsuranceForm = () => {
     });
     const [policyOwners, setPolicyOwners] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const [filteredSubCategories, setFilteredSubCategories] = useState([]);
-    
+    const [success, setSuccess] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchPolicyOwners();
@@ -93,17 +93,66 @@ const InsuranceForm = () => {
             setFormData({ ...formData, [name]: value });
         }
     };
-
     const handleDateChange = (date, field) => {
         setFormData({
             ...formData,
             [field]: date
         });
     };
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
 
+    const token = Cookies.get("access_token");
+
+    // Format the dates properly
+    const formattedData = {
+        ...formData,
+        start_date: formData.start_date ? format(formData.start_date, "yyyy-MM-dd") : null,
+        expiry_date: formData.expiry_date ? format(formData.expiry_date, "yyyy-MM-dd") : null,
+    };
+
+    const formDataToSend = new FormData();
+    Object.keys(formattedData).forEach((key) => {
+        if (formattedData[key] !== null) {
+            formDataToSend.append(key, formattedData[key]);
+        }
+    });
+
+    try {
+        const response = await axios.post(`${BASE_URL}/insurance/insurances/create/`, formDataToSend, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        setSuccess("Insurance form submitted successfully");
+        setFormData({
+            policy_owner: '',
+            policy_number: '',
+            category: '',
+            sub_category: '',
+            premium_amount: '',
+            start_date: null,
+            expiry_date: null,
+            status: 'active',
+            document: null,
+            document_url: '',
+        });
+    } catch (error) {
+        setError("Failed to submit insurance form");
+    } finally {
+        setLoading(false);
+    }
+};
     return (
         <div className="panel">
-            <form>
+        {error && <div className="alert alert-danger">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
+        <form onSubmit={handleSubmit}>
                 {/* Policy Owner */}
                 <div className="row g-3 mb-3">
                     <label className="col-md-2 col-form-label col-form-label-sm">Policy Owner</label>
@@ -263,12 +312,11 @@ const InsuranceForm = () => {
                         />
                     </div>
                 </div>
-
-                {/* Submit Button */}
+                 {/* Submit Button */}
                 <div className="row g-3 mb-3">
                     <div className="col-md-10 offset-md-2">
-                        <button type="submit" className="btn btn-primary btn-sm">
-                            Submit Insurance
+                        <button type="submit" className="btn btn-primary btn-sm" disabled={loading}>
+                            {loading ? 'Submitting...' : 'Submit Insurance'}
                         </button>
                     </div>
                 </div>

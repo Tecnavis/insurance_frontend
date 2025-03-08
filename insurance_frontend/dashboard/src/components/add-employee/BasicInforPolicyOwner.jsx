@@ -161,14 +161,6 @@ const BasicInformation = () => {
                             placeholderText="dd-mm-yyyy"
                             dateFormat="dd-MM-yyyy"
                         />
-                           {/* <DatePicker
-                              selected={formData.date_of_birth}
-                              onChange={handleDateChange}
-                              className="form-control"
-                              placeholderText="dd-MM-yyyy"
-                              dateFormat="dd-MM-yyyy" // Display format
-                            /> */}
-
                     </div>  
               </div>
               <div className="col-xxl-3 col-lg-4 col-sm-6">
