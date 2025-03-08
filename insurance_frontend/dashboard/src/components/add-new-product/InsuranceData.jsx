@@ -25,33 +25,33 @@ const InsuranceForm = () => {
     const [categories, setCategories] = useState([]);
     const [subCategories, setSubCategories] = useState([]);
     const [filteredSubCategories, setFilteredSubCategories] = useState([]);
+    
 
     useEffect(() => {
         fetchPolicyOwners();
     }, []);
-    
 
     const fetchPolicyOwners = async () => {
-            try {
+        try {
             const token = Cookies.get("access_token");
             const response = await axios.get(`${BASE_URL}/insurance/policy-owners/`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
+            // console.log("Fetched Policy Owners:", response.data);
+    
             if (!Array.isArray(response.data)) {
                 console.error("Unexpected API response:", response.data);
                 throw new Error("Invalid API response format");
             }
-            const customersWithDropdown = response.data.map((owner) => ({
-                ...owner,
-                showDropdown: false,
-            }));
-            } catch (error) {
+    
+            setPolicyOwners(response.data);  
+        } catch (error) {
+            console.error("Error fetching owners:", error);
             setError("Error fetching owners");
-            } finally {
+        } finally {
             setLoading(false); 
-            }
-        };
-
+        }
+    };
         useEffect(() => {
             fetchCategories();
             fetchSubCategories();
@@ -115,12 +115,17 @@ const InsuranceForm = () => {
                             onChange={handleChange}
                         >
                             <option value="">Select Policy Owner</option>
-                            {policyOwners.map(owner => (
-                                <option key={owner.id} value={owner.id}>{owner.username}</option>
-                            ))}
+                            {policyOwners.length > 0 ? (
+                                policyOwners.map(owner => (
+                                    <option key={owner.id} value={owner.id}>{owner.username}</option>
+                                ))
+                            ) : (
+                                <option disabled>No Owners Available</option>
+                            )}
                         </select>
                     </div>
                 </div>
+
 
                 {/* Policy Number */}
                 <div className="row g-3 mb-3">
